@@ -2,7 +2,7 @@ pipeline {
     agent any
     
     triggers {
-        githubPush()  // ← ESTO ES LO QUE FALTA para que el webhook dispare
+        githubPush()
     }
     
     stages {
@@ -21,22 +21,21 @@ pipeline {
     post {
         success {
             echo 'Pipeline exitoso'
-            sh '''
+            sh """
             curl -H "Content-Type: application/json" \
             -X POST \
-            -d '{"content": "🟢 **Pipeline Exitoso** en rama: '${GIT_BRANCH}'"}' \
+            -d '{"content": "🟢 Pipeline exitoso en rama ${env.GIT_BRANCH}"}' \
             https://discord.com/api/webhooks/1507006234174427307/2WHuLCJB_7NR_-ixH4SAK8QYOflPVbXkMSFV_Phe_n2gmP3Hgw-FA6brvMhOA35yk576
-            '''
+            """
         }
         failure {
             echo 'Pipeline falló'
-            sh '''
+            sh """
             curl -H "Content-Type: application/json" \
             -X POST \
-            -d '{"content": "🔴 **¡Alerta! Pipeline Falló** en rama: '${GIT_BRANCH}'"}' \
+            -d '{"content": "🔴 Pipeline falló en rama ${env.GIT_BRANCH}"}' \
             https://discord.com/api/webhooks/1507006234174427307/2WHuLCJB_7NR_-ixH4SAK8QYOflPVbXkMSFV_Phe_n2gmP3Hgw-FA6brvMhOA35yk576
-            '''
+            """
         }
     }
-}s
-// este esl jenkinsfile otra vez por ultima vez xd
+}
