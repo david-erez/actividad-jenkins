@@ -1,0 +1,21 @@
+pipeline{
+	agent any
+
+		stages{
+			stage(Build Test){
+				steps{
+					sh 'mvn clean test'	
+		     		}
+			}
+		}
+
+		post{
+			success {
+				echo 'pepilene exitoso'
+			}
+		
+			failure{
+				echo 'pepilene fallo'
+			}
+		}
+}
