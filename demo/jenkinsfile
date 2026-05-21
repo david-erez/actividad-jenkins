@@ -1,21 +1,29 @@
-pipeline{
-	agent any
+pipeline {
+    agent any
 
-		stages{
-			stage(Build Test){
-				steps{
-					sh 'mvn clean test'	
-		     		}
-			}
-		}
+    stages {
+        stage('Checkout') {
+            steps {
+                // Descarga automáticamente la rama exacta que provocó el git push erróneo
+                checkout scm
+            }
+        }
+        
+        stage('Build & Test') {
+            steps {
+                // Ejecuta la compilación y pruebas usando el Wrapper de Spring Boot
+                sh './mvnw clean test' 
+            }
+        }
+    }
 
-		post{
-			success {
-				echo 'pepilene exitoso'
-			}
-		
-			failure{
-				echo 'pepilene fallo'
-			}
-		}
+    post {
+        success {
+            echo 'pipeline exitoso'
+        }
+    
+        failure {
+            echo 'pipeline fallo'
+        }
+    }
 }
