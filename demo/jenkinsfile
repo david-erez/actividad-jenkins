@@ -1,41 +1,39 @@
 pipeline {
     agent any
-
+    
+    triggers {
+        githubPush()  // ← ESTO ES LO QUE FALTA para que el webhook dispare
+    }
+    
     stages {
         stage('Checkout') {
             steps {
-                // Descarga automáticamente la rama exacta que provocó el git push erróneo
                 checkout scm
             }
         }
-        
         stage('Build & Test') {
             steps {
-                // Ejecuta la compilación y pruebas usando el Wrapper de Spring Boot
-                sh './mvnw clean test' 
+                sh './mvnw clean test'
             }
         }
     }
-
-post {
+    
+    post {
         success {
-            echo 'pipeline exitoso'
-            // Reemplaza la URL de abajo por la que copiaste de tu Discord
+            echo 'Pipeline exitoso'
             sh '''
             curl -H "Content-Type: application/json" \
             -X POST \
-            -d '{"content": "🟢 **¡Pipeline Exitoso"}' \
+            -d '{"content": "🟢 **Pipeline Exitoso** en rama: '${GIT_BRANCH}'"}' \
             https://discord.com/api/webhooks/1507006234174427307/2WHuLCJB_7NR_-ixH4SAK8QYOflPVbXkMSFV_Phe_n2gmP3Hgw-FA6brvMhOA35yk576
             '''
         }
-    
         failure {
-            echo 'pipeline fallo'
-            // Reemplaza la URL de abajo por la que copiaste de tu Discord
+            echo 'Pipeline falló'
             sh '''
             curl -H "Content-Type: application/json" \
             -X POST \
-            -d '{"content": "🔴 **¡Alerta! El Pipeline Falló."}' \
+            -d '{"content": "🔴 **¡Alerta! Pipeline Falló** en rama: '${GIT_BRANCH}'"}' \
             https://discord.com/api/webhooks/1507006234174427307/2WHuLCJB_7NR_-ixH4SAK8QYOflPVbXkMSFV_Phe_n2gmP3Hgw-FA6brvMhOA35yk576
             '''
         }
