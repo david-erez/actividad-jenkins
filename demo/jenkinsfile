@@ -17,13 +17,27 @@ pipeline {
         }
     }
 
-    post {
+post {
         success {
             echo 'pipeline exitoso'
+            // Reemplaza la URL de abajo por la que copiaste de tu Discord
+            sh '''
+            curl -H "Content-Type: application/json" \
+            -X POST \
+            -d '{"content": "🟢 **¡Pipeline Exitoso"}' \
+            https://discord.com/api/webhooks/1507006234174427307/2WHuLCJB_7NR_-ixH4SAK8QYOflPVbXkMSFV_Phe_n2gmP3Hgw-FA6brvMhOA35yk576
+            '''
         }
     
         failure {
             echo 'pipeline fallo'
+            // Reemplaza la URL de abajo por la que copiaste de tu Discord
+            sh '''
+            curl -H "Content-Type: application/json" \
+            -X POST \
+            -d '{"content": "🔴 **¡Alerta! El Pipeline Falló."}' \
+            https://discord.com/api/webhooks/1507006234174427307/2WHuLCJB_7NR_-ixH4SAK8QYOflPVbXkMSFV_Phe_n2gmP3Hgw-FA6brvMhOA35yk576
+            '''
         }
     }
 }
