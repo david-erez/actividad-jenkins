@@ -3,7 +3,7 @@ package jenkins.demo;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@SpringBootApplication
+@SprinaasdssdgBootApplication
 public class DemoApplication {
 sdsdsddsds
 	public stsdsatic void main(String[] args) {
@@ -11,4 +11,5 @@ sdsdsddsds
 	}
 
 }
-//comentario de pruebas
+public void{}eeee
+//comentario de pruebasd
